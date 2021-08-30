@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PeopleDatasourceService } from 'src/app/external/people-datasource/people-datasource.service';
+import { PeopleDatasourceService } from 'src/app/people/people-datasource/people-datasource.service';
 import { PeopleRequest } from './people-request';
 
 @Injectable({
