@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { ApiService } from 'src/app/core/api/api.service';
 
 import { UrlUtilsService } from 'src/app/core/url-utils/url-utils.service';
@@ -33,6 +33,22 @@ export class PeopleDatasourceService {
 
     return this.apiService
       .get(`${this.resource}/?${queryString}`)
-      .pipe(map((response: any) => response.results));
+      .pipe(map((response: any) => this.transformPeopleData(response.results)));
+  }
+
+  private transformPeopleData(data: any[]): People[] {
+    return data.map((people) => {
+      return new People(
+        people.name,
+        parseInt(people.height),
+        parseInt(people.mass),
+        people.hair_color,
+        people.skin_color,
+        people.eye_color,
+        people.birth_year,
+        people.gender,
+        new Date(people.created)
+      );
+    });
   }
 }
