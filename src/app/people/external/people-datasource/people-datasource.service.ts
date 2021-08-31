@@ -44,7 +44,10 @@ export class PeopleDatasourceService {
     return `page=${page}`;
   }
 
-  private requestGetPeople(page: number, search: string | null) {
+  private requestGetPeople(
+    page: number,
+    search: string | null
+  ): Observable<People[]> {
     const params: any = {
       page: encodeURIComponent(page),
     };
