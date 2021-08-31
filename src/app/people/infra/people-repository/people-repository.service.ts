@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { PeopleDatasourceService } from 'src/app/people/people-datasource/people-datasource.service';
+import { Observable } from 'rxjs';
+import { PeopleDatasourceService } from 'src/app/people/external/people-datasource/people-datasource.service';
+import { People } from '../../domain/entities/people.type';
 import { PeopleRequest } from './people-request.type';
 
 @Injectable({
@@ -8,5 +10,7 @@ import { PeopleRequest } from './people-request.type';
 export class PeopleRepositoryService {
   constructor(private peopleDatasourceService: PeopleDatasourceService) {}
 
-  public getPeople(request: PeopleRequest) {}
+  public getPeople(request: PeopleRequest): Observable<People[]> {
+    return this.peopleDatasourceService.getPeople(request.page, request.name);
+  }
 }

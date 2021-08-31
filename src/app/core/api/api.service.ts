@@ -4,8 +4,12 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class PeopleDatasourceService {
+export class ApiService {
+  private baseUrl = 'https://swapi.dev/api';
+
   constructor(private httpClient: HttpClient) {}
 
-  public getPeople(page: number, searchTerm: string) {}
+  private get(url: string) {
+    return this.httpClient.get(`${this.baseUrl}/${url}`);
+  }
 }
