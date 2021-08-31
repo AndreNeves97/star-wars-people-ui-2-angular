@@ -39,7 +39,5 @@ export class PeopleListTableComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.data);
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 }

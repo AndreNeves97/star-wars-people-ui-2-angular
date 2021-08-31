@@ -23,7 +23,6 @@ export class PeopleListViewControllersComponent implements OnInit, OnDestroy {
   }
 
   private setNameFilter(text: string) {
-    console.log(text);
     this.controller.setNameFilter(text);
   }
 
