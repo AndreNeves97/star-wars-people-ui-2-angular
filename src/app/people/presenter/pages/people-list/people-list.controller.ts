@@ -53,20 +53,6 @@ export class PeopleListController {
     });
   }
 
-  private loadGetRequest(): PeopleRequest {
-    const filterState = this.filterState$.value;
-    const viewState = this.viewState$.value;
-
-    return new PeopleRequest(
-      filterState.created_start,
-      filterState.created_end,
-      filterState.skin_color,
-      filterState.name,
-      viewState.page,
-      viewState.order_by
-    );
-  }
-
   private setLoading() {
     const data = this.dataState$.value.data;
     this.dataState$.next(PeopleListDataState.loading(data));
@@ -85,7 +71,7 @@ export class PeopleListController {
     this.loadRequest$.pipe(debounceTime(50)).subscribe(() => {
       this.setLoading();
 
-      const request = this.loadGetRequest();
+      const request = this.getLoadRequest();
 
       this.peopleRepositoryService.getPeople(request).subscribe(
         (data) => this.setData(data),
@@ -104,5 +90,19 @@ export class PeopleListController {
     this.viewState$.subscribe(() => {
       this.load();
     });
+  }
+
+  private getLoadRequest(): PeopleRequest {
+    const filterState = this.filterState$.value;
+    const viewState = this.viewState$.value;
+
+    return new PeopleRequest(
+      filterState.created_start,
+      filterState.created_end,
+      filterState.skin_color,
+      filterState.name,
+      viewState.page,
+      viewState.order_by
+    );
   }
 }
