@@ -1,1 +1,25 @@
-<p>people-list-page works!</p>
+<ng-container *ngIf="$dataState | async as state">
+  <ng-container *ngIf="!state.is_loading && !state.has_error else unstableState">
+    Data <br><br>
+    {{ state.data | json }}
+  </ng-container>
+
+  <ng-template #unstableState>
+    <div *ngIf="state.is_loading" class="loading">
+      <ngb-progressbar  
+        type="info" 
+        [value]="100"
+        [striped]="true"
+        [animated]="true"
+      ></ngb-progressbar>      
+    </div>
+
+    <ngb-alert
+      *ngIf="!state.is_loading && state.has_error"
+      type="danger"
+    >
+      There's an error to load people list. Try again.
+    </ngb-alert>
+  </ng-template>
+</ng-container>
+

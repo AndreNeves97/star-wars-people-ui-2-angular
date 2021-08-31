@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { PeopleListDataState } from '../people-list-data-state.type';
 import { PeopleListController } from '../people-list.controller';
 
 @Component({
@@ -6,10 +8,21 @@ import { PeopleListController } from '../people-list.controller';
   templateUrl: './people-list-page.component.html',
   styleUrls: ['./people-list-page.component.scss'],
 })
-export class PeopleListPageComponent implements OnInit {
+export class PeopleListPageComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
+  public $dataState: Observable<PeopleListDataState>;
+
   constructor(private controller: PeopleListController) {
-    controller.load();
+    this.$dataState = this.controller.$dataState;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.controller.load();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

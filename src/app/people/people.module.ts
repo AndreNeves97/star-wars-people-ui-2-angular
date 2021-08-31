@@ -9,7 +9,6 @@ import { PeopleListFilterComponent } from './presenter/pages/people-list/compone
 import { PeopleListDisplayedFieldsComponent } from './presenter/pages/people-list/components/people-list-displayed-fields/people-list-displayed-fields.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,6 +17,6 @@ import { HttpClientModule } from '@angular/common/http';
     PeopleListFilterComponent,
     PeopleListDisplayedFieldsComponent,
   ],
-  imports: [CommonModule, PeopleRoutingModule, NgbModule, HttpClientModule],
+  imports: [CommonModule, PeopleRoutingModule, NgbModule],
 })
 export class PeopleModule {}

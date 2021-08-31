@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ApiService } from 'src/app/core/api/api.service';
 
 import { UrlUtilsService } from 'src/app/core/url-utils/url-utils.service';
 import { People } from '../../domain/entities/people.type';
@@ -13,7 +13,7 @@ export class PeopleDatasourceService {
   private resource = 'people';
 
   constructor(
-    private httpClient: HttpClient,
+    private apiService: ApiService,
     private urlUtilsService: UrlUtilsService
   ) {}
 
@@ -31,7 +31,7 @@ export class PeopleDatasourceService {
 
     const queryString = this.urlUtilsService.serializeObjToUrlParams(params);
 
-    return this.httpClient
+    return this.apiService
       .get(`${this.resource}/?${queryString}`)
       .pipe(map((response: any) => response.results));
   }

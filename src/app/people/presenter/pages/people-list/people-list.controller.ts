@@ -2,7 +2,6 @@ import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { People } from 'src/app/people/domain/entities/people.type';
 import { PeopleRepositoryService } from 'src/app/people/infra/people-repository/people-repository.service';
-import { PeopleModule } from 'src/app/people/people.module';
 import { PeopleListDataState } from './people-list-data-state.type';
 import { PeopleListFilterState } from './people-list-filter-state.type';
 import { PeopleListViewState } from './people-list-view-state.type';
@@ -39,7 +38,10 @@ export class PeopleListController implements OnInit, OnDestroy {
         page: viewState.page,
         order_by: viewState.order_by,
       })
-      .subscribe((data) => this.setData(data));
+      .subscribe(
+        (data) => this.setData(data),
+        () => this.setError()
+      );
   }
 
   private setLoading() {
