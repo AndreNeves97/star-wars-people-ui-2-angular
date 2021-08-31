@@ -11,10 +11,10 @@ import { PeopleListController } from '../people-list.controller';
 export class PeopleListPageComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  public $dataState: Observable<PeopleListDataState>;
+  public dataState$: Observable<PeopleListDataState>;
 
   constructor(private controller: PeopleListController) {
-    this.$dataState = this.controller.$dataState;
+    this.dataState$ = this.controller.dataState$;
   }
 
   ngOnInit(): void {

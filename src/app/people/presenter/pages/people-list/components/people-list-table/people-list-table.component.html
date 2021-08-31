@@ -1,1 +1,30 @@
-<p>people-list-table works!</p>
+<section class="table-wrapper">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col" sortable="name" (sort)="onSort($event)">Name</th>
+      <th scope="col" sortable="height" (sort)="onSort($event)">Height</th>
+      <th scope="col" sortable="mass" (sort)="onSort($event)">Mass</th>
+      <th scope="col" sortable="hair_color" (sort)="onSort($event)">Hair color</th>
+      <th scope="col" sortable="skin_color" (sort)="onSort($event)">Skin color</th>
+      <th scope="col" sortable="eye_color" (sort)="onSort($event)">Eye color</th>
+      <th scope="col" sortable="birth_year" (sort)="onSort($event)">Birth year</th>
+      <th scope="col" sortable="gender" (sort)="onSort($event)">Gender</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let people of data">
+      <th scope="row">{{ people.id }}</th>
+      <td>{{ people.name }}</td>
+      <td>{{ people.height }}</td>
+      <td>{{ people.mass }}</td>
+      <td>{{ people.hair_color }}</td>
+      <td>{{ people.skin_color }}</td>
+      <td>{{ people.eye_color }}</td>
+      <td>{{ people.birth_year }}</td>
+      <td>{{ people.gender }}</td>
+    </tr>
+    </tbody>
+  </table>
+</section>

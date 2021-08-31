@@ -1,10 +1,12 @@
-<ng-container *ngIf="$dataState | async as state">
-  <ng-container *ngIf="!state.is_loading && !state.has_error else unstableState">
-    Data <br><br>
-    {{ state.data | json }}
-  </ng-container>
+<header>
+  <h1>Star Wars | People</h1>
+</header>
 
-  <ng-template #unstableState>
+<main *ngIf="dataState$ | async as state">
+  <ng-container *ngIf="!state.has_error else errorState">
+
+    <app-people-list-view-controllers></app-people-list-view-controllers>
+
     <div *ngIf="state.is_loading" class="loading">
       <ngb-progressbar  
         type="info" 
@@ -14,12 +16,15 @@
       ></ngb-progressbar>      
     </div>
 
-    <ngb-alert
-      *ngIf="!state.is_loading && state.has_error"
-      type="danger"
-    >
+    <app-people-list-table
+      *ngIf="!state.is_loading" 
+      [data]="state.data"
+    ></app-people-list-table>
+  </ng-container>
+
+  <ng-template #errorState>
+    <ngb-alert type="danger">
       There's an error to load people list. Try again.
     </ngb-alert>
   </ng-template>
-</ng-container>
-
+</main>
