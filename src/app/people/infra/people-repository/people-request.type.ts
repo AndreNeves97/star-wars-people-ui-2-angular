@@ -7,13 +7,14 @@ export class PeopleRequest {
   skin_color: string | null;
   name: string | null;
   page: number;
+  items_per_page: number = 10;
   order_by: OrderBy<PeopleOrderableAttributes>;
 
   constructor(
-    created_start: Date,
-    created_end: Date,
-    skin_color: string,
-    name: string,
+    created_start: Date | null,
+    created_end: Date | null,
+    skin_color: string | null,
+    name: string | null,
     page: number,
     order_by: OrderBy<PeopleOrderableAttributes>
   ) {
