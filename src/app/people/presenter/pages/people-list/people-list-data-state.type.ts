@@ -6,7 +6,7 @@ import { People } from 'src/app/people/domain/entities/people.type';
 export class PeopleListDataState {
   has_error: boolean;
   is_loading: boolean;
-  data: People[];
+  data!: People[] | null;
 
   constructor(has_error: boolean, is_loading: boolean, data: People[]) {
     this.has_error = has_error;
@@ -14,19 +14,19 @@ export class PeopleListDataState {
     this.data = data;
   }
 
-  public static loading(): PeopleListDataState {
+  public static loading(data: People[] | null = null): PeopleListDataState {
     return {
       has_error: false,
       is_loading: true,
-      data: [],
+      data,
     };
   }
 
-  public static error(): PeopleListDataState {
+  public static error(data: People[] | null = null): PeopleListDataState {
     return {
       has_error: true,
       is_loading: false,
-      data: [],
+      data,
     };
   }
 

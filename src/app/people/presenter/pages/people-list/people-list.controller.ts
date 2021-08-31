@@ -1,5 +1,8 @@
-import { Injectable, OnDestroy, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+import { OrderBy } from 'src/app/core/order-by/order-by.type';
+import { PeopleOrderableAttributes } from 'src/app/people/domain/entities/people-sort-attributes.type';
 import { People } from 'src/app/people/domain/entities/people.type';
 import { PeopleRepositoryService } from 'src/app/people/infra/people-repository/people-repository.service';
 import { PeopleRequest } from 'src/app/people/infra/people-repository/people-request.type';
@@ -10,9 +13,7 @@ import { PeopleListViewState } from './people-list-view-state.type';
 @Injectable({
   providedIn: 'root',
 })
-export class PeopleListController implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
-
+export class PeopleListController {
   filterState$: BehaviorSubject<PeopleListFilterState> =
     new BehaviorSubject<PeopleListFilterState>(PeopleListFilterState.default());
 
@@ -22,20 +23,28 @@ export class PeopleListController implements OnInit, OnDestroy {
   dataState$: BehaviorSubject<PeopleListDataState> =
     new BehaviorSubject<PeopleListDataState>(PeopleListDataState.loading());
 
-  constructor(private peopleRepositoryService: PeopleRepositoryService) {}
+  loadRequest$: Subject<void> = new Subject<void>();
 
-  public load() {
-    this.setLoading();
-
-    const request = this.getRequest();
-
-    this.peopleRepositoryService.getPeople(request).subscribe(
-      (data) => this.setData(data),
-      () => this.setError()
-    );
+  constructor(private peopleRepositoryService: PeopleRepositoryService) {
+    this.listenLoadRequest();
+    this.listenFilterState();
+    this.listenViewState();
   }
 
-  private getRequest(): PeopleRequest {
+  public load() {
+    this.loadRequest$.next();
+  }
+
+  public setOrderBy(order_by: OrderBy<PeopleOrderableAttributes>) {
+    const viewState = this.viewState$.value;
+
+    this.viewState$.next({
+      ...viewState,
+      order_by,
+    });
+  }
+
+  private loadGetRequest(): PeopleRequest {
     const filterState = this.filterState$.value;
     const viewState = this.viewState$.value;
 
@@ -50,35 +59,40 @@ export class PeopleListController implements OnInit, OnDestroy {
   }
 
   private setLoading() {
-    this.dataState$.next(PeopleListDataState.loading());
+    const data = this.dataState$.value.data;
+    this.dataState$.next(PeopleListDataState.loading(data));
   }
 
   private setError() {
-    this.dataState$.next(PeopleListDataState.error());
+    const data = this.dataState$.value.data;
+    this.dataState$.next(PeopleListDataState.error(data));
   }
 
   private setData(data: People[]) {
     this.dataState$.next(PeopleListDataState.success(data));
   }
 
-  ngOnInit(): void {
-    this.listenFilterState();
-    this.listenViewState();
-  }
+  private listenLoadRequest() {
+    this.loadRequest$.pipe(debounceTime(400)).subscribe(() => {
+      this.setLoading();
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+      const request = this.loadGetRequest();
+
+      this.peopleRepositoryService.getPeople(request).subscribe(
+        (data) => this.setData(data),
+        () => this.setError()
+      );
+    });
   }
 
   private listenFilterState() {
-    this.filterState$.pipe().subscribe(() => {
+    this.filterState$.subscribe(() => {
       this.load();
     });
   }
 
   private listenViewState() {
-    this.viewState$.pipe().subscribe(() => {
+    this.viewState$.subscribe(() => {
       this.load();
     });
   }

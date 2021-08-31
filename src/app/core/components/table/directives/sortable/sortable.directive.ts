@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, Input, Output } from '@angular/core';
+import { Directive, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { OrderByMode } from 'src/app/core/order-by/order-by-mode.type';
 import { OrderBy } from 'src/app/core/order-by/order-by.type';
 
@@ -11,9 +11,9 @@ import { OrderBy } from 'src/app/core/order-by/order-by.type';
   },
 })
 export class SortableDirective {
-  @Input() sortable!: string | null;
+  @Input() sortable: string = '';
   @Input() direction!: OrderByMode | null;
-  @Output() sort = new EventEmitter<OrderBy<string>>();
+  @Output() sort = new EventEmitter<OrderBy<any>>();
 
   rotate() {
     this.direction = this.getNewDirection();

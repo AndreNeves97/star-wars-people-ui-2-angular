@@ -7,8 +7,9 @@
 
     <app-people-list-view-controllers></app-people-list-view-controllers>
 
-    <div *ngIf="state.is_loading" class="loading">
+    <div class="loading">
       <ngb-progressbar  
+        *ngIf="state.is_loading"
         type="info" 
         [value]="100"
         [striped]="true"
@@ -17,7 +18,7 @@
     </div>
 
     <app-people-list-table
-      *ngIf="!state.is_loading" 
+      *ngIf="!!state.data" 
       [data]="state.data"
     ></app-people-list-table>
   </ng-container>

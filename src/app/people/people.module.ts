@@ -8,12 +8,14 @@ import { PeopleListTableComponent } from './presenter/pages/people-list/componen
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PeopleListViewControllersComponent } from './presenter/pages/people-list/components/people-list-view-controllers/people-list-view-controllers.component';
+import { SortableDirective } from '../core/components/table/directives/sortable/sortable.directive';
 
 @NgModule({
   declarations: [
     PeopleListPageComponent,
     PeopleListTableComponent,
     PeopleListViewControllersComponent,
+    SortableDirective,
   ],
   imports: [CommonModule, PeopleRoutingModule, NgbModule],
 })
