@@ -19,7 +19,7 @@ export class PeopleListViewState {
 
   public static default(): PeopleListViewState {
     return {
-      page: 0,
+      page: 1,
       order_by: OrderBy.default<PeopleOrderableAttributes>(),
       display_attributes: PeopleDisplayAttributes.default(),
     };
