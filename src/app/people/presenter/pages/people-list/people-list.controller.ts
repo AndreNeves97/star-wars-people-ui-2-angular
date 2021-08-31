@@ -35,6 +35,15 @@ export class PeopleListController {
     this.loadRequest$.next();
   }
 
+  public setNameFilter(text: string) {
+    const filterState = this.filterState$.value;
+
+    this.filterState$.next({
+      ...filterState,
+      name: text,
+    });
+  }
+
   public setOrderBy(order_by: OrderBy<PeopleOrderableAttributes>) {
     const viewState = this.viewState$.value;
 
