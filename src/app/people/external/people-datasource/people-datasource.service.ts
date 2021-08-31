@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { delay, map, tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/core/api/api.service';
 
 import { UrlUtilsService } from 'src/app/core/url-utils/url-utils.service';
@@ -12,6 +12,8 @@ import { People } from '../../domain/entities/people.type';
 export class PeopleDatasourceService {
   private resource = 'people';
 
+  private dataCache: { [key: string]: People[] } = {};
+
   constructor(
     private apiService: ApiService,
     private urlUtilsService: UrlUtilsService
@@ -21,6 +23,28 @@ export class PeopleDatasourceService {
     page: number,
     search: string | null = null
   ): Observable<People[]> {
+    const cache_key = this.getCacheKey(page, search);
+
+    if (!!this.dataCache[cache_key]) {
+      return of(this.dataCache[cache_key]);
+    }
+
+    return this.requestGetPeople(page, search).pipe(
+      tap((data) => {
+        this.dataCache[cache_key] = data;
+      })
+    );
+  }
+
+  private getCacheKey(page: number, search: string | null = null) {
+    if (!!search) {
+      return `search=${search};page=${page}`;
+    }
+
+    return `page=${page}`;
+  }
+
+  private requestGetPeople(page: number, search: string | null) {
     const params: any = {
       page: encodeURIComponent(page),
     };

@@ -73,7 +73,7 @@ export class PeopleListController {
   }
 
   private listenLoadRequest() {
-    this.loadRequest$.pipe(debounceTime(400)).subscribe(() => {
+    this.loadRequest$.pipe(debounceTime(50)).subscribe(() => {
       this.setLoading();
 
       const request = this.loadGetRequest();
